@@ -1,0 +1,43 @@
+{@io.quarkiverse.roq.frontmatter.runtime.model.Site site}
+{@java.util.List<io.vertx.core.json.JsonObject> menu}
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="{site.url('/')}" class="md-nav__button md-logo" aria-label="{cdi:extra.getString('name')}">
+      <img src="{site.url.fromRoot('/images/stork-white.png')}" alt="logo">
+    </a>
+    {cdi:extra.getString('name')}
+  </label>
+
+  <ul class="md-nav__list" data-md-scrollfix>
+    {#for item in menu}
+      {#if item.items??}
+        <li class="md-nav__item md-nav__item--section md-nav__item--nested" title="{item.title}">
+          <input class="md-nav__toggle md-toggle" type="checkbox" id="nav-{item_index}" checked>
+          <label id="nav-{item_index}" for="nav-{item_index}" class="md-nav__link md-nav__toggle">
+            <span class="md-ellipsis">{item.title}</span>
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+          <nav class="md-nav" aria-label="{item.title}" data-md-level="1">
+            <label class="md-nav__title" for="nav-{item_index}">{item.title}</label>
+            <ul class="md-nav__list">
+              {#for subitem in item.items}
+                <li class="md-nav__item">
+                  <a href="{subitem.path}" class="md-nav__link" data-md-path="{subitem.path}">
+                    <span class="md-ellipsis">{subitem.title}</span>
+                  </a>
+                </li>
+              {/for}
+            </ul>
+          </nav>
+        </li>
+      {#else}
+        <li class="md-nav__item">
+          <a href="{item.path}" {#if item.target??}target="{item.target}"{/if} class="md-nav__link" data-md-path="{item.path}">
+            <span class="md-ellipsis">{item.title}</span>
+          </a>
+        </li>
+      {/if}
+    {/for}
+  </ul>
+</nav>

@@ -1,0 +1,115 @@
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents" data-md-level="2" data-md-component="toc">
+  <label class="md-nav__title">
+    Table of contents
+  </label>
+  <ul class="md-nav__list" data-md-component="toc">
+    <!-- Populated at runtime from page headings -->
+  </ul>
+</nav>
+
+{| 
+<script>
+  (function () {
+    function slugify(text) {
+      return String(text || "")
+        .trim()
+        .toLowerCase()
+        .replace(/[\s_]+/g, "-")
+        .replace(/[^a-z0-9\-]/g, "")
+        .replace(/-+/g, "-")
+        .replace(/^-|-$/g, "");
+    }
+
+    function ensureHeadingId(heading, usedIds) {
+      if (heading.id) {
+        usedIds.add(heading.id);
+        return heading.id;
+      }
+
+      var base = slugify(heading.textContent) || "section";
+      var candidate = base;
+      var i = 2;
+      while (usedIds.has(candidate) || document.getElementById(candidate)) {
+        candidate = base + "-" + i;
+        i += 1;
+      }
+      heading.id = candidate;
+      usedIds.add(candidate);
+      return candidate;
+    }
+
+    function buildToc() {
+      var tocList = document.querySelector('.md-nav--secondary .md-nav__list[data-md-component="toc"]');
+      var contentRoot = document.querySelector('.md-content__inner.md-typeset');
+
+      if (!tocList || !contentRoot) {
+        return;
+      }
+
+      var headings = Array.prototype.slice.call(contentRoot.querySelectorAll('h2, h3, h4'));
+      if (headings.length === 0) {
+        tocList.innerHTML = '';
+        return;
+      }
+
+      tocList.innerHTML = '';
+
+      var usedIds = new Set();
+      var levelRoot = 2;
+      var listStack = [tocList];
+      var lastItemByLevel = {};
+
+      headings.forEach(function (heading) {
+        var level = Number(heading.tagName.substring(1));
+        var id = ensureHeadingId(heading, usedIds);
+        var text = (heading.textContent || '').trim();
+        if (!text) {
+          return;
+        }
+
+        if (level < levelRoot) {
+          level = levelRoot;
+        }
+
+        while (listStack.length > (level - levelRoot + 1)) {
+          listStack.pop();
+        }
+
+        while (listStack.length < (level - levelRoot + 1)) {
+          var parentLevel = levelRoot + listStack.length - 1;
+          var parentItem = lastItemByLevel[parentLevel];
+          if (!parentItem) {
+            break;
+          }
+          var subList = document.createElement('ul');
+          subList.className = 'md-nav__list';
+          parentItem.appendChild(subList);
+          listStack.push(subList);
+        }
+
+        var li = document.createElement('li');
+        li.className = 'md-nav__item';
+
+        var a = document.createElement('a');
+        a.className = 'md-nav__link';
+        a.href = '#' + id;
+
+        var span = document.createElement('span');
+        span.className = 'md-ellipsis';
+        span.textContent = text;
+
+        a.appendChild(span);
+        li.appendChild(a);
+        listStack[listStack.length - 1].appendChild(li);
+        lastItemByLevel[level] = li;
+      });
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', buildToc);
+    } else {
+      buildToc();
+    }
+  })();
+</script>
+|}

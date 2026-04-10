@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>io.quarkiverse.roq</groupId>
+    <artifactId>quarkus-roq-theme-material</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+    <packaging>jar</packaging>
+
+    <name>Quarkus Roq - Theme - Material</name>
+    <description>
+        A Material for MkDocs-inspired theme for Quarkus Roq static site generator.
+        Provides a 3-column documentation layout with a fixed header, left navigation
+        sidebar, right table-of-contents sidebar, dark/light mode toggle, and a
+        Red Hat-sponsored footer. Designed as a drop-in replacement for quarkus-roq-theme-default
+        for technical documentation sites.
+    </description>
+
+    <properties>
+        <maven.compiler.release>17</maven.compiler.release>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <quarkus-roq.version>2.0.4</quarkus-roq.version>
+        <jandex-maven-plugin.version>3.2.4</jandex-maven-plugin.version>
+    </properties>
+
+    <dependencies>
+        <!--
+            quarkus-roq-frontmatter provides the Qute template integration,
+            page/site model CDI beans, and the :theme/ layout resolution mechanism.
+            This is the only required runtime dependency for a theme module.
+        -->
+        <dependency>
+            <groupId>io.quarkiverse.roq</groupId>
+            <artifactId>quarkus-roq-frontmatter</artifactId>
+            <version>${quarkus-roq.version}</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <!--
+                Jandex indexing is required so that Quarkus CDI scanning can
+                discover any CDI beans provided by this module on the classpath.
+                Even though this theme ships no Java code today, it is required
+                practice for Quarkus extension-style JARs and enables future
+                addition of CDI producers (e.g. a server-side TOC bean) without
+                a rebuild of consumer projects.
+            -->
+            <plugin>
+                <groupId>io.smallrye</groupId>
+                <artifactId>jandex-maven-plugin</artifactId>
+                <version>${jandex-maven-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>make-index</id>
+                        <goals>
+                            <goal>jandex</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>

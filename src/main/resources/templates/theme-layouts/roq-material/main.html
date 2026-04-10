@@ -1,0 +1,34 @@
+---
+layout: roq-material/default
+---
+
+{@io.quarkiverse.roq.frontmatter.runtime.model.Site site}
+
+{#include partials/roq-material/md-header.html /}
+
+<div class="md-container" data-md-component="container">
+  <main class="md-main" data-md-component="main">
+    <div class="md-main__inner md-grid">
+
+      <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation">
+        <div class="md-sidebar__scrollwrap">
+          <div class="md-sidebar__inner">
+            {#include partials/roq-material/sidebar-nav.html menu=cdi:menu.items /}
+          </div>
+        </div>
+      </div>
+
+      {#insert /}
+
+      <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc">
+        <div class="md-sidebar__scrollwrap">
+          <div class="md-sidebar__inner">
+            {#include partials/roq-material/toc-sidebar.html /}
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+  {#include partials/roq-material/md-footer.html /}
+</div>

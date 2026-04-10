@@ -1,0 +1,15 @@
+/* Theme-owned CSS from web/static (no SCSS preprocessing required). */
+:root {
+  --roq-active-link-color: #ff9100;
+}
+
+.md-nav__link--active,
+.md-nav__item--active > .md-nav__link {
+  color: var(--roq-active-link-color);
+  font-weight: 600;
+}
+
+.md-nav__item--active > .md-nav__link .md-ellipsis {
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
