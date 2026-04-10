@@ -4,9 +4,15 @@ A clone of MkDocs' material theme for use in Quarkus Roq. This repository is cur
 
 ## How To Use
 
-Note that this currently only works if you have locally cloned the repository.
+Note that this currently only works if you have locally cloned and built the repository:
 
-Include the dependency in `pom.xml` as you would the defalut theme:
+```sh
+git clone https://github.com/RyanJK5/Roq-Material-Theme
+cd Roq-Material-Theme
+mvn clean build
+```
+
+Include the dependency in `pom.xml` of your Roq project as you would the default theme:
 
 ```xml
 <dependency>
@@ -22,12 +28,18 @@ Specify the necessary information in `data/extra.yml` like so:
 name: Smallrye Stork
 repo_url: https://github.com/smallrye/smallrye-stork
 logo: /images/stork-white.png
-version:
-  current: SNAPSHOT
 ```
+
+And then run your application:
+
+```sh
+mvn quarkus:dev
+```
+
 
 ## Work Left to Do
 
+- Fix GitHub widget only showing Stork information
 - Code cleanup
     - Change `extra.yml` to something that makes more sense
 - Replace custom search functionality with [Roq's Lunr Plugin](https://quarkus.io/extensions/io.quarkiverse.roq/quarkus-roq-plugin-lunr/)
