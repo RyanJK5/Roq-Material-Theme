@@ -39,7 +39,7 @@ mvn quarkus:dev
 
 ## Work Left to Do
 
-- Fix GitHub widget only showing Stork information
+- ~~Fix GitHub widget only showing Stork information~~
 - Code cleanup
     - Change `extra.yml` to something that makes more sense
 - Replace custom search functionality with [Roq's Lunr Plugin](https://quarkus.io/extensions/io.quarkiverse.roq/quarkus-roq-plugin-lunr/)

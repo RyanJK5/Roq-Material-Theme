@@ -6501,27 +6501,29 @@
     }
     return y;
   }
-  var Os;
+  var Os = new Map();
   function Ls(e) {
-    return (
-      Os ||
-      (Os = H(() => {
-        let t = __md_get("__source", sessionStorage);
-        if (t) return $(t);
-        if (me("consent").length) {
-          let o = __md_get("__consent");
-          if (!(o && o.github)) return y;
-        }
-        return Hi(e.href).pipe(
-          O((o) => __md_set("__source", o, sessionStorage)),
-        );
-      }).pipe(
-        ve(() => y),
-        g((t) => Object.keys(t).length > 0),
-        m((t) => ({ facts: t })),
-        Z(1),
-      ))
+    let t = e.href,
+      r = typeof __md_hash == "function" ? __md_hash(t) : encodeURIComponent(t),
+      o = `__source.${r}`;
+    if (Os.has(t)) return Os.get(t);
+    let n = H(() => {
+      let i = __md_get(o, sessionStorage);
+      if (i) return $(i);
+      if (me("consent").length) {
+        let s = __md_get("__consent");
+        if (!(s && s.github)) return y;
+      }
+      return Hi(t).pipe(
+        O((s) => __md_set(o, s, sessionStorage)),
+      );
+    }).pipe(
+      ve(() => y),
+      g((i) => Object.keys(i).length > 0),
+      m((i) => ({ facts: i })),
+      Z(1),
     );
+    return Os.set(t, n), n;
   }
   function $i(e) {
     let t = j(":scope > :last-child", e);
